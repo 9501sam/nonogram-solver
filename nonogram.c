@@ -35,7 +35,6 @@ read_des(FILE *fp, description *des)
         des->cols[j][++num_d] = num;
         des->cols[j][0] = num_d;
     }
-
     return 0;
 }
 
@@ -44,12 +43,10 @@ main(int argc, char *argv[])
 {
     char *input = argv[1];
     FILE *fp = fopen(input, "r");
-
     if (argc != 2) {
         fprintf(stderr, "Usage: %s input", argv[0]);
         exit(EXIT_FAILURE);
     }
-
     if ((fp = fopen(input, "r")) == NULL) {
         fprintf(stderr, "%s can't be opened\n", input);
     }
@@ -60,7 +57,7 @@ main(int argc, char *argv[])
     des = (description *)malloc(sizeof(description));
 
     int i;
-    for (i = 1; i <= 100; i++) {
+    for (i = 1; i <= 1000; i++) {
         init_board(bd);
         read_des(fp, des);
         propagate(bd, des);

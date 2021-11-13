@@ -85,9 +85,9 @@ propagate(board *bd, description *des)
     bool change = true;
     while (change) {
         change = false;
-        for (i = 1; i <= BD_SIZE; i++) {
+
+        for (i = 1; i <= BD_SIZE; i++)
             bd->rows[i] = paint(BD_SIZE, des->rows[i][0], bd->rows[i], des->rows[i]);
-        }
         for (i = 1; i <= BD_SIZE; i++)
             for (j = 1; j <= BD_SIZE; j++)
                 if (GET_S(bd->rows[i], j) != GET_S(bd->cols[j], i)) {
@@ -95,9 +95,9 @@ propagate(board *bd, description *des)
                     SET_BD(bd, i, j, val);
                     change = true;
                 }
-        for (j = 1; j <= BD_SIZE; j++) {
+
+        for (j = 1; j <= BD_SIZE; j++)
             bd->cols[j] = paint(BD_SIZE, des->cols[j][0], bd->cols[j], des->cols[j]);
-        }
         for (i = 1; i <= BD_SIZE; i++)
             for (j = 1; j <= BD_SIZE; j++)
                 if (GET_S(bd->rows[i], j) != GET_S(bd->cols[j], i)) {
