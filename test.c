@@ -118,11 +118,6 @@ test_fix()
 }
 
 void
-test_fix0()
-{
-}
-
-void
 test_fix1()
 {
     uint64_t s;
