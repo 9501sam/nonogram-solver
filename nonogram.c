@@ -42,7 +42,7 @@ int
 main(int argc, char *argv[])
 {
     char *input = argv[1];
-    FILE *fp = fopen(input, "r");
+    FILE *fp;
     if (argc != 2) {
         fprintf(stderr, "Usage: %s input", argv[0]);
         exit(EXIT_FAILURE);
