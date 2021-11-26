@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -O3 -g
 TARGET = nonogram
-OBJ = board.o solve.o
+OBJ = board.o solve.o set.o
 RM = rm -rf
 
 all: $(TARGET)
@@ -16,6 +16,9 @@ board.o: board.c
 	$(CC) -c $^ $(CFLAGS)
 
 solve.o: solve.c
+	$(CC) -c $^ $(CFLAGS)
+
+set.o: set.c
 	$(CC) -c $^ $(CFLAGS)
 
 run: $(TARGET)

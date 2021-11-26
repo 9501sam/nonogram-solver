@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include "board.h"
+#include "set.h"
 
 #define MERGE(s, t) (s | t)
 

@@ -80,32 +80,44 @@ paint1(int i, int j, uint64_t s, int *d)
 void
 propagate(board *bd, description *des)
 {
-    uint64_t val;
+    uint64_t new, old;
     int i, j;
-    bool change = true;
-    while (change) {
-        change = false;
+    set *row_set = new_set();
+    set *col_set = new_set();
+    for (i = 0; i <= BD_SIZE; i++)
+        push(row_set, i);
+    for (j = 0; j <= BD_SIZE; j++)
+        push(col_set, j);
 
-        for (i = 1; i <= BD_SIZE; i++)
+#include <assert.h>
+    assert(!IS_EMPTY(row_set));
+
+    while (!IS_EMPTY(row_set) || !IS_EMPTY(col_set)) {
+        while (!IS_EMPTY(row_set)) {
+            i = pop(row_set);
             bd->rows[i] = paint(BD_SIZE, des->rows[i][0], bd->rows[i], des->rows[i]);
-        for (i = 1; i <= BD_SIZE; i++)
-            for (j = 1; j <= BD_SIZE; j++)
-                if (GET_S(bd->rows[i], j) != GET_S(bd->cols[j], i)) {
-                    val = GET_S(bd->rows[i], j);
-                    SET_BD(bd, i, j, val);
-                    change = true;
+            for (j = 1; j <= BD_SIZE; j++) {
+                new = GET_S(bd->rows[i], j);
+                old = GET_S(bd->cols[j], i);
+                if (new != old) {
+                    SET_BD(bd, i, j, new);
+                    push(col_set, j);
                 }
+            }
+        }
 
-        for (j = 1; j <= BD_SIZE; j++)
+        while (!IS_EMPTY(col_set)) {
+            j = pop(col_set);
             bd->cols[j] = paint(BD_SIZE, des->cols[j][0], bd->cols[j], des->cols[j]);
-        for (i = 1; i <= BD_SIZE; i++)
-            for (j = 1; j <= BD_SIZE; j++)
-                if (GET_S(bd->rows[i], j) != GET_S(bd->cols[j], i)) {
-                    val = GET_S(bd->cols[j], i);
-                    SET_BD(bd, i, j, val);
-                    change = true;
+            for (i = 1; i <= BD_SIZE; i++) {
+                new = GET_S(bd->cols[j], i);
+                old = GET_S(bd->rows[i], j);
+                if (new != old) {
+                    SET_BD(bd, i, j, new);
+                    push(row_set, i);
                 }
-        print_board(bd);
+            }
+        }
     }
 }
 

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "board.h"
 #include "solve.h"
+#include "set.h"
 
 int des[51][16] = {
     {0, },
@@ -112,7 +113,6 @@ test_fix()
 
     int i;
     for (i = 1; i <= BD_SIZE; i++) {
-        printf("i = %d\n", i);
         assert(fix(BD_SIZE, des[i][0], s, des[i]) == true);
     }
 }
@@ -143,7 +143,6 @@ test_match()
 
     int i;
     for (i = 1; i <= BD_SIZE; i++) {
-        printf("i = %d\n", i);
         assert(match(BD_SIZE, des[i][0], s) == true);
     }
 }
@@ -158,6 +157,27 @@ test_paint()
     assert(((s >> 12) << 12) == (uint64_t)0x6aaaaaaaaaaaa000);
 }
 
+void
+test_set()
+{
+    int val;
+    set *st = new_set();
+    push(st, 12);
+    val = pop(st);
+    assert(val == 12);
+    assert(IS_EMPTY(st) == true);
+
+    push(st, 12);
+    push(st, 12);
+    push(st, 25);
+    push(st, 25);
+    val = pop(st);
+    assert(val == 12);
+    val = pop(st);
+    assert(val == 25);
+    assert(IS_EMPTY(st) == true);
+}
+
 int
 main()
 {
@@ -167,6 +187,7 @@ main()
     test_fix();
     test_fix1();
     test_paint();
+    test_set();
 
     exit(EXIT_SUCCESS);
 }
