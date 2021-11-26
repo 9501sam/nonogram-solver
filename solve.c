@@ -89,9 +89,6 @@ propagate(board *bd, description *des)
     for (j = 0; j <= BD_SIZE; j++)
         push(col_set, j);
 
-#include <assert.h>
-    assert(!IS_EMPTY(row_set));
-
     while (!IS_EMPTY(row_set) || !IS_EMPTY(col_set)) {
         while (!IS_EMPTY(row_set)) {
             i = pop(row_set);
