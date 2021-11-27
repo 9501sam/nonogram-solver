@@ -13,6 +13,7 @@ init_board(board *bd)
     for (i = 1; i <= BD_SIZE; i++)
         for (j = 1; j <= BD_SIZE; j++)
             SET_BD(bd, i, j, U);
+    bd->status = INCOMPLETE;
 }
 
 void
@@ -33,4 +34,15 @@ print_board(board *bd)
         printf("\n");
     }
     printf("\n");
+}
+
+bool
+is_solved(board *bd)
+{
+    int i, j;
+    for (i = 1; i <= BD_SIZE; i++)
+        for (j = 1; j < BD_SIZE; j++)
+            if (GET_BD(bd, i, j) == U)
+                return false;
+    return true;
 }

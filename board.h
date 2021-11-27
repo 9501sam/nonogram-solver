@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define BD_SIZE 25
 #define ZERO    (uint64_t)0x4000000000000000 // 01
@@ -33,10 +34,17 @@ typedef struct {
 typedef struct {
     uint64_t rows[BD_SIZE + 1];
     uint64_t cols[BD_SIZE + 1];
+    enum {SOLVED, CONFLICT, PAINTED, INCOMPLETE} status;
 } board;
+
+typedef struct {
+    int i;
+    int j;
+} pixel;
 
 void init_board(board *);
 void print_board(board *);
+bool is_solved(board *);
 
 #endif
 

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <getopt.h>
+#include <time.h>
 #include "board.h"
 #include "solve.h"
 
@@ -57,11 +57,17 @@ main(int argc, char *argv[])
     des = (description *)malloc(sizeof(description));
 
     int i;
+    clock_t start, end;
+    float seconds;
     for (i = 1; i <= 1000; i++) {
         init_board(bd);
         read_des(fp, des);
-        propagate(bd, des);
-        printf("$%d\n", i);
+
+        start = clock();
+        fp1(bd, des);
+        end = clock();
+        seconds = (float)(end - start) / CLOCKS_PER_SEC;
+        printf("$%d: %.2lf sec\n", i, seconds);
         print_board(bd);
     }
 
