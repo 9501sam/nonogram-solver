@@ -133,6 +133,7 @@ propagate(board *bd, description *des)
         bd->status = INCOMPLETE;
     free(row_set);
     free(col_set);
+    print_board(bd);
     return II_G;
 }
 

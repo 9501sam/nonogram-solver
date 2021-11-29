@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <time.h>
 #include "board.h"
 #include "solve.h"
@@ -69,6 +70,7 @@ main(int argc, char *argv[])
         seconds = (float)(end - start) / CLOCKS_PER_SEC;
         printf("$%d: %.2lf sec\n", i, seconds);
         print_board(bd);
+        sleep(1);
     }
 
     exit(EXIT_SUCCESS);
