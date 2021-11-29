@@ -64,7 +64,7 @@ main(int argc, char *argv[])
         read_des(fp, des);
 
         start = clock();
-        fp1(bd, des);
+        backtracking(bd, des);
         end = clock();
         seconds = (float)(end - start) / CLOCKS_PER_SEC;
         printf("$%d: %.2lf sec\n", i, seconds);

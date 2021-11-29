@@ -83,7 +83,7 @@ int
 propagate(board *bd, description *des)
 {
     uint64_t new, old;
-    int i, j, ret_val = 0;
+    int i, j, II_G = 0;
     set *row_set = new_set();
     set *col_set = new_set();
     for (i = 0; i <= BD_SIZE; i++)
@@ -105,7 +105,7 @@ propagate(board *bd, description *des)
                 if (new != old) {
                     SET_BD(bd, i, j, new);
                     push(col_set, j);
-                    ret_val = 1;
+                    II_G++;
                 }
             }
         }
@@ -122,7 +122,7 @@ propagate(board *bd, description *des)
                 if (new != old) {
                     SET_BD(bd, i, j, new);
                     push(row_set, i);
-                    ret_val = 1;
+                    II_G++;
                 }
             }
         }
@@ -133,7 +133,7 @@ propagate(board *bd, description *des)
         bd->status = INCOMPLETE;
     free(row_set);
     free(col_set);
-    return ret_val;
+    return II_G;
 }
 
 void
@@ -159,6 +159,8 @@ fp1(board *bd, description *des)
     } while (flag);
 }
 
+int m[2][BD_SIZE + 1][BD_SIZE + 1] = {0};
+
 void
 probe(board *bd, description *des, int pi, int pj)
 {
@@ -171,8 +173,12 @@ probe(board *bd, description *des, int pi, int pj)
     SET_BD(bd1, pi, pj, ONE);
     bd0_new_paint = propagate(bd0, des);
     bd1_new_paint = propagate(bd1, des);
+    m[0][pi][pj] = bd0_new_paint;
+    m[1][pi][pj] = bd1_new_paint;
     if (bd0->status == CONFLICT && bd1->status == CONFLICT) {
         bd->status = CONFLICT;
+        free(bd0);
+        free(bd1);
         return;
     } else if (bd0->status == CONFLICT) {
         memcpy(bd, bd1, sizeof(board));
@@ -183,6 +189,8 @@ probe(board *bd, description *des, int pi, int pj)
     } else {
         bd_new_paint = merge_bd(bd, bd0, bd1);
     }
+    free(bd0);
+    free(bd1);
 
     if (bd_new_paint != 0)
         bd->status = PAINTED;
@@ -209,5 +217,37 @@ merge_bd(board *bd, board *bd0, board *bd1)
 void
 backtracking(board *bd, description *des)
 {
+    fp1(bd, des);
+    if (bd->status == CONFLICT)
+        return;
+    if (bd->status == SOLVED)
+        return;
+
+    int pi = 0, pj = 0;
+    int i, j, max = 0;
+    for (i = 1; i <= BD_SIZE; i++)
+        for (j = 1; j <= BD_SIZE; j++)
+            if (GET_BD(bd, i, j) == U && (m[0][i][j] + 1) * (m[1][i][j] + 1) > max) {
+                pi = i;
+                pj = j;
+            }
+    board *bd0 = (board *)malloc(sizeof(board));
+    board *bd1 = (board *)malloc(sizeof(board));
+    memcpy(bd0, bd, sizeof(board));
+    memcpy(bd1, bd, sizeof(board));
+    SET_BD(bd0, pi, pj, ZERO);
+    SET_BD(bd1, pi, pj, ONE);
+    backtracking(bd0, des);
+    if (bd0->status == SOLVED) {
+        memcpy(bd, bd0, sizeof(board));
+        return;
+    }
+    backtracking(bd1, des);
+    if (bd1->status == SOLVED) {
+        memcpy(bd, bd1, sizeof(board));
+        return;
+    }
+    free(bd0);
+    free(bd1);
 }
 
