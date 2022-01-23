@@ -1,6 +1,5 @@
 # Nonogram Solver
 Another nonogram solver based on *[An Efficient Approach to Solving Nonograms](https://ieeexplore.ieee.org/document/6476646)*.  
-Not yet complete.
 
 ## Usage
 ### Download the code
